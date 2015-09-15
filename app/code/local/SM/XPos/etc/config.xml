@@ -1,0 +1,45 @@
+<config>
+    <modules>
+        <SM_XPos>
+            <version>1.0.0</version>
+        </SM_XPos>
+    </modules>
+    <global>
+        <blocks>
+            <xpos>
+                <class>SM_XPos_Block</class>
+            </xpos>
+        </blocks>
+        <helpers>
+            <xpos>
+                <class>SM_XPos_Helper</class>
+            </xpos>
+        </helpers>
+        <models>
+            <xpos>
+                <class>SM_XPos_Model</class>
+            </xpos>
+        </models>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <sm_xpos>SM_XPos_Adminhtml</sm_xpos>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <pos>
+                    <file>sm/xpos.xml</file>
+                </pos>
+            </updates>
+        </layout>
+
+    </adminhtml>
+</config>

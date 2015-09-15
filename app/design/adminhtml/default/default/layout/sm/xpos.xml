@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_xpos_index>
+        <reference name="head">
+            <action method="removeItem">
+                <type>skin_css</type>
+                <name>boxes.css</name>
+            </action>
+            <action method="addCss">
+                <file>sm/xpos/css/xpos.css</file>
+            </action>
+            <action method="addCss">
+                <file>sm/xpos/css/bootstrap.min.css</file>
+            </action>
+            <action method="addCss">
+                <file>sm/xpos/css/xpos.css</file>
+            </action>
+            <action method="addJs">
+                <file>lib/jquery/jquery-1.10.2.js</file>
+            </action>
+            <action method="addJs">
+                <file>lib/jquery/noconflict.js</file>
+            </action>
+            <action method="addCss">
+                <file>sm/xpos/css/ui.css</file>
+            </action>
+            <action method="addJs">
+                <file>sm/xpos/js/jquery-ui/ui.js</file>
+            </action>
+            <action method="addJs">
+                <file>sm/xpos/js/bootstrap.min.js</file>
+            </action>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/template" template="sm/xpos/page/js.phtml" name="xjs"/>
+        </reference>
+        <reference name="header">
+            <action method="setTemplate">
+                <template>sm/xpos/page/header.phtml</template>
+            </action>
+        </reference>
+        <reference name="root">
+            <remove name="menu"/>
+            <remove name="notifications"/>
+            <remove name="footer"/>
+            <block type="xpos/adminhtml_sales_order_create" name="content" template="sm/xpos/page/content.phtml">
+                <block type="adminhtml/sales_order_create_form" name="form"
+                       template="sm/xpos/sales/order/create/form.phtml">
+                    <!--<block type="adminhtml/sales_order_create_messages" name="message"/>-->
+                    <block type="core/template" template="sm/xpos/sales/order/create/customer.phtml" name="customer">
+                        <block type="core/template" template="sm/xpos/sales/order/create/customer/search.phtml"
+                               name="search"/>
+                    </block>
+                    <block type="core/template" template="sm/xpos/sales/order/create/store.phtml"
+                           name="store"/>
+                    <block type="adminhtml/sales_order_create_data" template="sm/xpos/sales/order/create/data.phtml"
+                           name="data">
+                        <block type="sales/order_items"
+                               template="sm/xpos/sales/order/create/items.phtml" name="items"/>
+                        <block type="adminhtml/sales_order_create_items_grid"
+                               template="sm/xpos/sales/order/create/items/grid.phtml" name="items_grid">
+                        </block>
+                        <block type="core/template" template="sm/xpos/sales/order/create/products.phtml" name="products">
+                            <block type="core/template" template="sm/xpos/sales/order/create/products/head.phtml"
+                                   name="head"/>
+                            <block type="core/template" template="sm/xpos/sales/order/create/products/grid.phtml"
+                                   name="grid"/>
+                        </block>
+                    </block>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_xpos_index>
+</layout>

@@ -1,0 +1,21 @@
+<div class="modal fade" id="modal-store-selector">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Store</h4>
+            </div>
+            <div class="modal-body body-store">
+                <?php
+                $stores = Mage::helper('xpos')->getAllStore();
+                foreach ($stores as $store):
+                    ?>
+                    <button type="button" class="btn-block btn btn-default store-selector-btn"
+                            id="<?php echo $store['store_id'] ?>"><?php echo $store['name'] ?></button>
+                <?php endforeach ?>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

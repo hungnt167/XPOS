@@ -1,0 +1,23 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: SMART
+ * Date: 9/14/2015
+ * Time: 2:08 PM
+ */
+?>
+<form id="edit_form" action="<?php echo $this->getSaveUrl() ?>" method="post" enctype="multipart/form-data">
+    <?php echo $this->getBlockHtml('formkey')?>
+<!--    <div id="order-message">-->
+        <?php echo $this->getChildHtml('message') ?>
+<!--    </div>-->
+<!--    <div id="order-customer-selector" style="display:--><?php //echo $this->getCustomerSelectorDisplay() ?><!--">-->
+        <?php echo $this->getChildHtml('customer') ?>
+<!--    </div>-->
+<!--    <div id="order-store-selector" style="display:--><?php //echo $this->getStoreSelectorDisplay() ?><!--">-->
+        <?php echo $this->getChildHtml('store') ?>
+<!--    </div>-->
+<!--    <div id="order-data" style="display:--><?php //echo $this->getDataSelectorDisplay() ?><!--">-->
+        <?php  echo $this->getChildHtml()?>
+<!--    </div>-->
+</form>

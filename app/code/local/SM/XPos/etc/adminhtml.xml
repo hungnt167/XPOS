@@ -1,0 +1,13 @@
+<config>
+    <menu>
+        <sales>
+            <children>
+                <xpos>
+                    <title>X-POS</title>
+                    <sort_order>10</sort_order>
+                    <action>adminhtml/xPos</action>
+                </xpos>
+            </children>
+        </sales>
+    </menu>
+</config>

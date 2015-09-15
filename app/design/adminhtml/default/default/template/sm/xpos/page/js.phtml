@@ -1,0 +1,107 @@
+<script type="text/javascript">
+    (function () {
+        var isBootstrapEvent = false;
+        if (window.jQuery) {
+            var all = jQuery('*');
+            jQuery.each(['hide.bs.dropdown',
+                'hide.bs.collapse',
+                'hide.bs.modal',
+                'hide.bs.tooltip',
+                'hide.bs.popover'], function (index, eventName) {
+                all.on(eventName, function (event) {
+                    isBootstrapEvent = true;
+                });
+            });
+        }
+        var originalHide = Element.hide;
+        Element.addMethods({
+            hide: function (element) {
+                if (isBootstrapEvent) {
+                    isBootstrapEvent = false;
+                    return element;
+                }
+                return originalHide(element);
+            }
+        });
+    })();
+    $j(document).ready(function () {
+        var modalCustomer = $j('#modal-customer-selector');
+        var modalStore = $j('#modal-store-selector');
+
+        //first show store model
+
+        modalStore.modal({
+            'show': true,
+        });
+        $j('.store-selector-btn').click(function () {
+            var storeId = $j(this).attr('id');
+            $j.ajax({
+                method: 'post',
+                url: '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/xPos/setStore")."?isAjax=true" ?>',
+                data: {storeId: storeId, form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey();  ?>'}
+            }).success(function (data) {
+                toggleStoreVrCusModal(modalStore)
+            }).error(function () {
+
+            }).done(function (data) {
+
+            });
+        });
+        $j(".search-customer").autocomplete({
+            delay: 500,
+            source: function (request, response) {
+                jQuery.get("<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/xPos/searchCustomer") ?>", {
+                    query: request.term
+                }, function (data) {
+                    response(data);
+                });
+            },
+            select: function (event, ui) {
+                var customerId = ui.item.value;
+                $j.ajax({
+                    method: 'post',
+                    url: '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/xPos/setCustomer")."?isAjax=true" ?>',
+                    data: {
+                        customerId: customerId,
+                        form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey();  ?>'
+                    }
+                }).success(function (data) {
+                    console.log(data);
+                    modalCustomer.modal('hide');
+                }).error(function () {
+
+                }).done(function (data) {
+
+                });
+
+            }
+        });
+        function toggleStoreVrCusModal(modal) {
+            if (modal == modalStore) {
+                modalStore.modal('hide');
+                modalCustomer.modal('show');
+            } else {
+                modalStore.modal('show');
+                modalCustomer.modal('hide');
+            }
+        }
+
+    });
+    //add comment into order
+    var $stock_input = $j("#stock textarea");
+
+    $stock_input.on("click", false);
+    //product partition
+    $j(".search-product").autocomplete({
+        delay: 500,
+        source: function (request, response) {
+            jQuery.get("<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/xPos/searchProduct") ?>", {
+                query: request.term
+            }, function (data) {
+                $j('.product-panel').html(data);
+                response(data);
+            });
+        },
+    });
+
+</script>

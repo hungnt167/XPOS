@@ -1,0 +1,7 @@
+<config>
+    <modules>
+        <SM_XPos>
+            <active>true</active>
+            <codePool>local</codePool>
+        </SM_XPos></modules>
+</config>
