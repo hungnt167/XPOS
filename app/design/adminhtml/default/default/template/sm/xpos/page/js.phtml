@@ -66,7 +66,6 @@
                         form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey();  ?>'
                     }
                 }).success(function (data) {
-                    console.log(data);
                     modalCustomer.modal('hide');
                 }).error(function () {
 
@@ -85,13 +84,13 @@
                 modalCustomer.modal('hide');
             }
         }
-
     });
     //add comment into order
     var $stock_input = $j("#stock textarea");
 
     $stock_input.on("click", false);
     //product partition
+
     $j(".search-product").autocomplete({
         delay: 500,
         source: function (request, response) {
@@ -103,5 +102,22 @@
             });
         },
     });
+    function addProduct(productId){
+        $j.ajax({
+            method: 'post',
+            url: '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/xPos/addProduct")."?isAjax=true" ?>',
+            data: {
+                productId: productId,
+                qty: 1,
+                form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey();  ?>'
+            }
+        }).success(function (data) {
+            $j('.item-tbody').append(data);
+        }).error(function () {
+
+        }).done(function (data) {
+
+        });
+    }
 
 </script>

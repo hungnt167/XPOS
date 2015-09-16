@@ -1,15 +1,17 @@
-<div class="row">
+<div class="row product-row">
     <?php foreach ($products as $product): ?>
-        <div class="col-sm-6 col-md-3 hero-feature">
-            <div class="thumbnail">
-                <img alt="" src="<?php echo $product['image'] ?>"/>
+        <a href="#">
+            <div class="col-sm-6 col-md-3 hero-feature" onclick="addProduct(<?php echo $product['id'] ?>)">
+                <div class="thumbnail">
+                    <img alt="" src="<?php echo $product['image'] ?>"/>
 
-                <div class="caption">
-                    <h6>
-                        <?php echo $product['name'] ?>
-                    </h6>
+                    <div class="caption">
+                        <h6>
+                            <?php echo $product['name'] ?>
+                        </h6>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     <?php endforeach ?>
 </div>
