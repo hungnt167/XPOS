@@ -84,6 +84,39 @@
                 modalCustomer.modal('hide');
             }
         }
+        //cancel order cancel-order-btn
+        $j('.cancel-order-btn').click(function(){
+            $j('.item-tbody').empty();
+            $j.ajax({
+                method: 'post',
+                url: '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/xPos/cancelOrder")."?isAjax=true" ?>',
+                data: {
+                    form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey();  ?>'
+                }
+            }).success(function (data) {
+                console.log(data);
+            }).error(function () {
+
+            }).done(function (data) {
+
+            });
+        });
+        // save order save-order-btn
+        $j('.save-order-btn').click(function(){
+            $j.ajax({
+                method: 'post',
+                url: '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/xPos/saveOrder")."?isAjax=true" ?>',
+                data: {
+                    form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey();  ?>'
+                }
+            }).success(function (data) {
+                console.log(data);
+            }).error(function () {
+
+            }).done(function (data) {
+
+            });
+        });
     });
     //add comment into order
     var $stock_input = $j("#stock textarea");
@@ -98,7 +131,6 @@
                 query: request.term
             }, function (data) {
                 $j('.product-panel').html(data);
-                response(data);
             });
         },
     });
@@ -112,7 +144,9 @@
                 form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey();  ?>'
             }
         }).success(function (data) {
-            $j('.item-tbody').append(data);
+            console.log(data);
+            $j('.item-tbody').empty();
+            $j('.item-tbody').html(data);
         }).error(function () {
 
         }).done(function (data) {

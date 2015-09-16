@@ -1,8 +1,41 @@
+<?php echo $items->getItemsSummaryQty();
+$formator=Mage::helper('checkout');
+foreach ($items->getAllItems() as $item):
+    ?>
+    <tr>
+        <td><?php echo count($c); echo $item->getProduct()->getSku() ?></td>
+        <td><?php echo $item->getProduct()->getName() ?></td>
+        <td>
+            <?php
+            $qty = 0;
+            if (($children = $item->getChildren()) && $item->isShipSeparately()) {
+                foreach ($children as $child) {
+                    $qty += $child->getQty() * $item->getQty();
+                }
+            } else {
+                $qty += $item->getQty();
+            }
+            echo $qty;
+            ?>
+        </td>
+        <td></td>
+        <td><?php echo $formator->formatPrice($item->getProduct()->getPrice()); ?></td>
+        <td><?php echo $formator->formatPrice($item->getProduct()->getFinalPrice()); ?></td>
+    </tr>
+
+
+<?php endforeach ?>
+
 <tr>
-    <td><?php echo $product->getSku() ?></td>
-    <td><?php echo $product->getName() ?></td>
-    <td>1</td>
-    <td>1</td>
-    <td><?php echo $product->getPrice() ?></td>
-    <td>1</td>
+    <td colspan="2">Item Quantity</td>
+    <td><?php echo $items->getItemsQty(); ?>
+    </td><td>Discount</td>
+    <td></td>
+</tr>
+<tr>
+    <td colspan="2">Item</td>
+    <td><?php echo $items->getItemsCount() ?>
+    </td><td colspan="2">Subtotal</td>
+    <td ><?php echo $formator->formatPrice($items->getSubtotal()); ?>
+    </td>
 </tr>
