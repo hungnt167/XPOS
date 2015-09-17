@@ -6,6 +6,8 @@
  * Date: 9/11/2015
  * Time: 4:23 PM
  */
+require_once(BP . DS . 'app' . DS . 'code' . DS . 'core' . DS . 'Mage' . DS . 'Adminhtml' . DS . 'controllers' . DS . 'Sales' . DS . 'Order' . DS . 'CreateController.php');
+
 class SM_XPos_Adminhtml_XPosController extends Mage_Adminhtml_Sales_Order_CreateController
 {
     public $storeId;
@@ -35,11 +37,65 @@ class SM_XPos_Adminhtml_XPosController extends Mage_Adminhtml_Sales_Order_Create
         return Mage::getSingleton('checkout/cart');
     }
 
+
+    protected function _processActionData($action = null)
+    {
+        parent::_processActionData($action);
+        Mage::app()->setCurrentStore($this->getStore());
+        $quote = Mage::getSingleton('checkout/cart')->getQuote();
+        if ($action == 'save') {
+            $mt=Mage::getSingleton('payment/method_free');
+                $payDefault=Mage::getSingleton('sales/quote_payment')->load(1);
+                $quote->setPayment($payDefault);
+                $quote->getPayment()->setMethod('free');
+                    $quote->save();
+            $h=Mage::helper('payment')->getPaymentMethods();
+            foreach ($h as $pp) {
+                var_dump($pp);break;
+            }
+
+            var_dump($quote->getPayment()->getData());
+            $this->_getOrderCreateModel()->setQuote($quote);
+
+            $this->_getOrderCreateModel()
+                ->saveQuote();
+
+        }
+    }
+
+    /**
+     * Save Action
+     *
+     */
     public function saveOrderAction()
     {
+        Mage::app()->setCurrentStore($this->getStore());
+        try {
+            $this->_processActionData('save');
+            $order = $this->_getOrderCreateModel()
+                ->setIsValidate(true)
+                ->createOrder();
+            die(fdgd);
 
-        $onePage = Mage::getSingleton('checkout/type_onepage');
-        $onePage->saveOrder();
+            $this->_getSession()->clear();
+            $this->getResponse()->setBody($this->__('The order has been created.'));
+        } catch (Mage_Payment_Model_Info_Exception $e) {
+            $this->_getOrderCreateModel()->saveQuote();
+            $message = $e->getMessage();
+            if (!empty($message)) {
+                $this->_getSession()->addError($message);
+            }
+            $this->_redirect('*/*/');
+        } catch (Mage_Core_Exception $e) {
+            $message = $e->getMessage();
+            if (!empty($message)) {
+                $this->_getSession()->addError($message);
+            }
+            $this->_redirect('*/*/');
+        } catch (Exception $e) {
+            $this->_getSession()->addException($e, $this->__('Order saving error: %s', $e->getMessage()));
+            $this->_redirect('*/*/');
+        }
     }
 
     public function addProductAction()
@@ -134,10 +190,12 @@ class SM_XPos_Adminhtml_XPosController extends Mage_Adminhtml_Sales_Order_Create
     {
         Mage::app()->setCurrentStore($this->getStore());
         $customerId = $this->getRequest()->getParam('customerId');
-        $customer=Mage::getSingleton('customer/customer')->load($customerId);
+        $customer = Mage::getSingleton('customer/customer')->load($customerId);
         $this->_getSession()->setCustomerId($customerId);
         $quote = Mage::getModel('checkout/cart')->getQuote();
-        $quote->setCustomer($customer);
+
+        //
+        $quote->setCustomer($customer)->save();
         $this->getResponse()->setBody(($this->getCustomer()));
     }
 
